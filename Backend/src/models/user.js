@@ -35,5 +35,13 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+//instance methods
+userSchema.methods.getJWT = function () {
+  const user = this;
+  //here this.id is a mongoose getter that's why it directly returns a id
+  const id = this.id;
+  const token = jwt.sign({ _id: id }, JWT_SECRET, { expiresIn: "1d" });
+  return token;
+};
 const User = mongoose.model("User", userSchema);
 module.exports = { User };
