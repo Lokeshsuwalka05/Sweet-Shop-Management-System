@@ -1,6 +1,7 @@
 module.exports = {
-  testEnvironment: 'node',
-  coveragePathIgnorePatterns: ['/node_modules/'],
+  testEnvironment: "node",
+  coveragePathIgnorePatterns: ["/node_modules/"],
   testTimeout: 10000,
-  setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
+  setupFiles: ["dotenv/config"],
+  setupFilesAfterEnv: ["<rootDir>/tests/setup.js"],
 };

@@ -30,14 +30,14 @@ describe("User Model", () => {
     expect(user.role).toBe("user");
   });
 
-  test.only("getJWT should return a valid token", async () => {
+  test("getJWT should return a valid token", async () => {
     const user = await User.create(userData);
     const token = user.getJWT();
     expect(token).toBeDefined();
     expect(typeof token).toBe("string");
   });
 
-  test.only("JWT should contain correct user id", async () => {
+  test("JWT should contain correct user id", async () => {
     const user = await User.create(userData);
 
     const token = user.getJWT();
