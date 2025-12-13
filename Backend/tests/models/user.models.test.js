@@ -26,6 +26,23 @@ describe("User Model", () => {
 
   test("should set default role as user", async () => {
     const user = await User.create(userData);
+
     expect(user.role).toBe("user");
+  });
+
+  test.only("getJWT should return a valid token", async () => {
+    const user = await User.create(userData);
+    const token = user.getJWT();
+    expect(token).toBeDefined();
+    expect(typeof token).toBe("string");
+  });
+
+  test.only("JWT should contain correct user id", async () => {
+    const user = await User.create(userData);
+
+    const token = user.getJWT();
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    expect(decoded._id).toBe(user.id);
   });
 });
