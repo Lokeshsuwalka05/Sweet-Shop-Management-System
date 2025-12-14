@@ -119,6 +119,43 @@ sweetsRouter.get("/api/sweets", requireAuth, async (req, res) => {
   }
 });
 
+sweetsRouter.get("/api/sweets/:id", requireAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Validate MongoDB ObjectId format
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({ error: "Invalid sweet ID format" });
+    }
+
+    const sweet = await Sweet.findById(id);
+
+    if (!sweet) {
+      return res.status(404).json({ error: "Sweet not found" });
+    }
+
+    const safe = {
+      _id: sweet._id,
+      name: sweet.name,
+      category: sweet.category,
+      price: sweet.price,
+      stock: sweet.stock,
+      description: sweet.description,
+      ingredients: sweet.ingredients,
+      imageUrl: sweet.imageUrl,
+      isAvailable: sweet.isAvailable,
+      rating: sweet.rating,
+      createdAt: sweet.createdAt,
+      updatedAt: sweet.updatedAt,
+    };
+
+    res.status(200).json(safe);
+  } catch (e) {
+    const message = e && e.message ? e.message : "Failed to fetch sweet";
+    res.status(500).json({ error: message });
+  }
+});
+
 sweetsRouter.put("/api/sweets/:id", requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
