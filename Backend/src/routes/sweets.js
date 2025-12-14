@@ -1,6 +1,6 @@
 const express = require("express");
 const { Sweet } = require("../models/sweet");
-const { requireAdmin } = require("../middlewares/auth");
+const { requireAdmin, requireAuth } = require("../middlewares/auth");
 
 const sweetsRouter = express.Router();
 
@@ -42,6 +42,32 @@ sweetsRouter.post("/api/sweets", requireAdmin, async (req, res) => {
   } catch (e) {
     const message = e && e.message ? e.message : "Creation failed";
     res.status(400).json({ error: message });
+  }
+});
+
+sweetsRouter.get("/api/sweets", requireAuth, async (req, res) => {
+  try {
+    const sweets = await Sweet.find({});
+    
+    const safeSweets = sweets.map((sweet) => ({
+      _id: sweet._id,
+      name: sweet.name,
+      category: sweet.category,
+      price: sweet.price,
+      stock: sweet.stock,
+      description: sweet.description,
+      ingredients: sweet.ingredients,
+      imageUrl: sweet.imageUrl,
+      isAvailable: sweet.isAvailable,
+      rating: sweet.rating,
+      createdAt: sweet.createdAt,
+      updatedAt: sweet.updatedAt,
+    }));
+
+    res.status(200).json({ sweets: safeSweets });
+  } catch (e) {
+    const message = e && e.message ? e.message : "Failed to fetch sweets";
+    res.status(500).json({ error: message });
   }
 });
 
