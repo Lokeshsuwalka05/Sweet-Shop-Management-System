@@ -17,8 +17,6 @@ const extractToken = (req) => {
 const requireAuth = async (req, res, next) => {
   try {
     const token = extractToken(req);
-    console.log("Token:", token);
-
     if (!token) {
       return res.status(401).json({ error: "Unauthorized" });
     }

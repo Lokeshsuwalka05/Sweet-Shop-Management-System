@@ -14,7 +14,6 @@ const saltRounds =
     : 10;
 authRouter.post("/api/auth/register", async (req, res) => {
   try {
-    console.log("hello");
     validateSignupData(req.body);
     const { firstName, lastName, emailId, password } = req.body;
     // Prevent duplicate registrations for same email
