@@ -1,10 +1,12 @@
 const express = require("express");
 const { authRouter } = require("./routes/auth");
 const { sweetsRouter } = require("./routes/sweets");
+const { inventoryRouter } = require("./routes/inventory");
 const cookieParser = require("cookie-parser");
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use("/", authRouter);
 app.use("/", sweetsRouter);
+app.use("/", inventoryRouter);
 module.exports = { app };
