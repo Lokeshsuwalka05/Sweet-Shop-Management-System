@@ -45,10 +45,58 @@ sweetsRouter.post("/api/sweets", requireAdmin, async (req, res) => {
   }
 });
 
+sweetsRouter.get("/api/sweets/search", requireAuth, async (req, res) => {
+  try {
+    const { name, category, priceMin, priceMax } = req.query;
+    
+    const filter = {};
+    
+    if (name) {
+      filter.name = { $regex: name, $options: "i" };
+    }
+    
+    if (category) {
+      filter.category = category;
+    }
+    
+    if (priceMin !== undefined || priceMax !== undefined) {
+      filter.price = {};
+      if (priceMin !== undefined) {
+        filter.price.$gte = Number(priceMin);
+      }
+      if (priceMax !== undefined) {
+        filter.price.$lte = Number(priceMax);
+      }
+    }
+
+    const sweets = await Sweet.find(filter);
+
+    const safeSweets = sweets.map((sweet) => ({
+      _id: sweet._id,
+      name: sweet.name,
+      category: sweet.category,
+      price: sweet.price,
+      stock: sweet.stock,
+      description: sweet.description,
+      ingredients: sweet.ingredients,
+      imageUrl: sweet.imageUrl,
+      isAvailable: sweet.isAvailable,
+      rating: sweet.rating,
+      createdAt: sweet.createdAt,
+      updatedAt: sweet.updatedAt,
+    }));
+
+    res.status(200).json({ sweets: safeSweets });
+  } catch (e) {
+    const message = e && e.message ? e.message : "Search failed";
+    res.status(500).json({ error: message });
+  }
+});
+
 sweetsRouter.get("/api/sweets", requireAuth, async (req, res) => {
   try {
     const sweets = await Sweet.find({});
-    
+
     const safeSweets = sweets.map((sweet) => ({
       _id: sweet._id,
       name: sweet.name,
