@@ -174,4 +174,26 @@ sweetsRouter.put("/api/sweets/:id", requireAdmin, async (req, res) => {
   }
 });
 
+sweetsRouter.delete("/api/sweets/:id", requireAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Validate MongoDB ObjectId format
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({ error: "Invalid sweet ID format" });
+    }
+
+    const sweet = await Sweet.findByIdAndDelete(id);
+
+    if (!sweet) {
+      return res.status(404).json({ error: "Sweet not found" });
+    }
+
+    res.status(200).json({ message: "Sweet deleted successfully" });
+  } catch (e) {
+    const message = e && e.message ? e.message : "Delete failed";
+    res.status(400).json({ error: message });
+  }
+});
+
 module.exports = { sweetsRouter };
