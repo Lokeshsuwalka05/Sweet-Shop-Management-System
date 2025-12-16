@@ -8,9 +8,14 @@ const { profileRouter } = require("./routes/profile");
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+
+// Allow configuring CORS origins via env (comma-separated), fallback to local Vite dev server
+const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173")
+  .split(",")
+  .map((o) => o.trim());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: allowedOrigins,
     credentials: true,
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
   })
