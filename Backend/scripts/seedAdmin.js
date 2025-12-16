@@ -26,7 +26,6 @@ async function seedAdmin() {
 
   const existing = await User.findOne({ emailId });
   if (existing) {
-    console.log(`Admin already exists: ${emailId}`);
     return;
   }
 
@@ -38,13 +37,11 @@ async function seedAdmin() {
     passwordHash,
     role: "admin",
   });
-
-  console.log(`Seeded admin: ${emailId}`);
 }
 
 seedAdmin()
   .then(() => {
-    console.log("Done");
+    console.log("Admin user seeded successfully");
     process.exit(0);
   })
   .catch((err) => {
