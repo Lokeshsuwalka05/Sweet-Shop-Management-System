@@ -47,7 +47,7 @@ sweetsRouter.post("/api/sweets", requireAdmin, async (req, res) => {
 
 sweetsRouter.get("/api/sweets/search", requireAuth, async (req, res) => {
   try {
-    const { name, category, priceMin, priceMax } = req.query;
+    const { name, category, minPrice, maxPrice } = req.query;
 
     const filter = {};
 
@@ -59,13 +59,13 @@ sweetsRouter.get("/api/sweets/search", requireAuth, async (req, res) => {
       filter.category = category;
     }
 
-    if (priceMin !== undefined || priceMax !== undefined) {
+    if (minPrice !== undefined || maxPrice !== undefined) {
       filter.price = {};
-      if (priceMin !== undefined) {
-        filter.price.$gte = Number(priceMin);
+      if (minPrice !== undefined) {
+        filter.price.$gte = Number(minPrice);
       }
-      if (priceMax !== undefined) {
-        filter.price.$lte = Number(priceMax);
+      if (maxPrice !== undefined) {
+        filter.price.$lte = Number(maxPrice);
       }
     }
 
