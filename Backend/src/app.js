@@ -4,6 +4,7 @@ const { sweetsRouter } = require("./routes/sweets");
 const { inventoryRouter } = require("./routes/inventory");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const { profileRouter } = require("./routes/profile");
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -17,4 +18,5 @@ app.use(
 app.use("/", authRouter);
 app.use("/", sweetsRouter);
 app.use("/", inventoryRouter);
+app.use("/", profileRouter);
 module.exports = { app };
