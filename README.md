@@ -104,7 +104,9 @@ A full-stack web application for managing a sweet shop: browse sweets, search an
    npm install
    ```
 2. Verify Axios base URL matches the backend:
-   - See [Frontend/src/lib/axios.js](Frontend/src/lib/axios.js) — currently `http://localhost:3000` with `withCredentials: true`.
+
+- See [Frontend/src/utils/constant.js](Frontend/src/utils/constant.js) — update `API_BASE_URL` if your backend runs elsewhere.
+
 3. Run the dev server:
    ```bash
    npm run dev
