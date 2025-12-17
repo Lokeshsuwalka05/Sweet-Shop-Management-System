@@ -45,6 +45,7 @@ A full-stack web application for managing a sweet shop: browse sweets, search an
 - **Auth**
   - `POST /api/auth/register`
   - `POST /api/auth/login`
+  - `POST /api/auth/logout` — clears `token` cookie
 - **Profile**
   - `GET /api/profile`
 - **Sweets**
@@ -79,8 +80,11 @@ A full-stack web application for managing a sweet shop: browse sweets, search an
    JWT_SECRET=replace_with_a_strong_secret
    port=3000
    BCRYPT_SALT_ROUNDS=give_your_own_salt
-
+   NODE_ENV=development
    ```
+
+   - `BCRYPT_SALT_ROUNDS` must be a positive integer; defaults to `10` if unset/invalid.
+   - `NODE_ENV` controls cookie flags on login.
 
    Note: The server reads `port` (lowercase). Use `3000` to match the frontend axios base URL.
 
@@ -126,6 +130,13 @@ npm test
 
 - CORS is configured in [Backend/src/app.js](Backend/src/app.js) to allow `http://localhost:5173` with credentials.
 - Frontend sends cookies (`withCredentials: true`). Ensure your browser allows third-party cookies in dev if proxies differ.
+- Auth cookies:
+  - Cookie name: `token`
+  - Register: sets `httpOnly` cookie with `maxAge=1 day`.
+  - Login: sets `httpOnly` cookie with `maxAge=1 day` and environment-aware flags:
+    - production: `secure=true`, `sameSite=none` (requires HTTPS)
+    - development: `sameSite=lax`
+  - Logout: clears the `token` cookie immediately.
 
 ## My AI Usage
 
