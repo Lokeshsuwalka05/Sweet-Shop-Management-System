@@ -13,7 +13,7 @@ import Purchase from "@/pages/Purchase";
 import Body from "@/components/Body";
 import toast, { Toaster } from "react-hot-toast";
 import { useEffect } from "react";
-import { API_BASE_URL } from "./utils/constant";
+import { API_BASE_URL, IS_PROD } from "./utils/constant";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -61,7 +61,7 @@ const PublicRoute = ({ children }) => {
 
 function App() {
   useEffect(() => {
-    const isProd = import.meta.env.PROD;
+    const isProd = IS_PROD;
     const isRender =
       typeof API_BASE_URL === "string" && API_BASE_URL.includes("render.com");
     const key = "render_free_tier_toast_shown_v1";
