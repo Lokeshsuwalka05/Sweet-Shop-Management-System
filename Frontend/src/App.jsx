@@ -11,6 +11,9 @@ import Sweets from "@/pages/Sweets";
 import Admin from "@/pages/Admin";
 import Purchase from "@/pages/Purchase";
 import Body from "@/components/Body";
+import toast, { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
+import { API_BASE_URL } from "./utils/constant";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -57,8 +60,31 @@ const PublicRoute = ({ children }) => {
 };
 
 function App() {
+  useEffect(() => {
+    const isProd = import.meta.env.PROD;
+    const isRender =
+      typeof API_BASE_URL === "string" && API_BASE_URL.includes("render.com");
+    const key = "render_free_tier_toast_shown_v1";
+    const shown = localStorage.getItem(key) === "1";
+    if (isProd && isRender && !shown) {
+      toast(
+        "Backend is on Render free tier. First request may take up to 30–60s. Please wait…",
+        {
+          icon: "ℹ️",
+          style: {
+            background: "#E0F2FE",
+            color: "#0369A1",
+            border: "1px solid #7DD3FC",
+          },
+          duration: 6000,
+        }
+      );
+      localStorage.setItem(key, "1");
+    }
+  }, []);
   return (
     <Router>
+      <Toaster position="top-right" />
       <AuthProvider>
         <Routes>
           {/* Public Routes */}
