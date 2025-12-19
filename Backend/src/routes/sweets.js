@@ -166,7 +166,9 @@ sweetsRouter.put("/api/sweets/:id", requireAdmin, async (req, res) => {
     }
 
     const updateData = req.body;
-
+    if (updateData.price > 200) {
+      return res.status(400).json({ error: "Price cannot exceed 200" });
+    }
     // Validate fields if provided
     if (updateData.price !== undefined) {
       if (typeof updateData.price !== "number" || updateData.price < 0) {

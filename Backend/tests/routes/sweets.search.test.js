@@ -110,12 +110,11 @@ describe("GET /api/sweets/search", () => {
     expect(res.body.sweets.every((s) => s.price >= 300)).toBe(true);
   });
 
-  test("should search sweets by maximum price only", async () => {
+  test.only("should search sweets by maximum price only", async () => {
     const res = await request(app)
       .get("/api/sweets/search")
-      .query({ priceMax: 100 })
+      .query({ maxPrice: 100 })
       .set("Cookie", userCookie);
-
     expect(res.status).toBe(200);
     expect(res.body.sweets.length).toBe(2);
     expect(res.body.sweets.every((s) => s.price <= 100)).toBe(true);

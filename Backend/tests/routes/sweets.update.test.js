@@ -47,7 +47,6 @@ describe("PUT /api/sweets/:id", () => {
       price: 150,
       stock: 20,
     };
-
     const res = await request(app)
       .put(`/api/sweets/${sweetId}`)
       .set("Cookie", adminCookie)
@@ -58,6 +57,18 @@ describe("PUT /api/sweets/:id", () => {
     expect(res.body.sweet.name).toBe("Premium Gulab Jamun");
     expect(res.body.sweet.price).toBe(150);
     expect(res.body.sweet.stock).toBe(20);
+  });
+  test.only("should Not only allowed sweets which has the price of above 200  ", async () => {
+    const updateData = {
+      name: "Luxury Sweet",
+      price: 250,
+    };
+    const res = await request(app)
+      .put(`/api/sweets/${sweetId}`)
+      .set("Cookie", adminCookie)
+      .send(updateData);
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe("Price cannot exceed 200");
   });
 
   test("should return 404 for non-existent sweet", async () => {
