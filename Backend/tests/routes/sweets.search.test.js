@@ -89,7 +89,7 @@ describe("GET /api/sweets/search", () => {
   test("should search sweets by price range (min and max)", async () => {
     const res = await request(app)
       .get("/api/sweets/search")
-      .query({ priceMin: 100, priceMax: 200 })
+      .query({ minPrice: 100, maxPrice: 200 })
       .set("Cookie", userCookie);
 
     expect(res.status).toBe(200);
@@ -102,7 +102,7 @@ describe("GET /api/sweets/search", () => {
   test("should search sweets by minimum price only", async () => {
     const res = await request(app)
       .get("/api/sweets/search")
-      .query({ priceMin: 300 })
+      .query({ minPrice: 300 })
       .set("Cookie", userCookie);
 
     expect(res.status).toBe(200);
@@ -110,7 +110,7 @@ describe("GET /api/sweets/search", () => {
     expect(res.body.sweets.every((s) => s.price >= 300)).toBe(true);
   });
 
-  test.only("should search sweets by maximum price only", async () => {
+  test("should search sweets by maximum price only", async () => {
     const res = await request(app)
       .get("/api/sweets/search")
       .query({ maxPrice: 100 })
@@ -135,7 +135,7 @@ describe("GET /api/sweets/search", () => {
   test("should combine category and price range", async () => {
     const res = await request(app)
       .get("/api/sweets/search")
-      .query({ category: "Dessert", priceMax: 110 })
+      .query({ category: "Dessert", maxPrice: 110 })
       .set("Cookie", userCookie);
 
     expect(res.status).toBe(200);

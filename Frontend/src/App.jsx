@@ -65,7 +65,7 @@ function App() {
     const isRender =
       typeof API_BASE_URL === "string" && API_BASE_URL.includes("render.com");
     const key = "render_free_tier_toast_shown_v1";
-    const shown = localStorage.getItem(key) === "1";
+    const shown = sessionStorage.getItem(key) === "1";
     if (isProd && isRender && !shown) {
       toast(
         "Backend is on Render free tier. First request may take up to 30–60s. Please wait…",
@@ -79,7 +79,7 @@ function App() {
           duration: 6000,
         }
       );
-      localStorage.setItem(key, "1");
+      sessionStorage.setItem(key, "1");
     }
   }, []);
   return (

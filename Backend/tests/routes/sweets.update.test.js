@@ -58,7 +58,7 @@ describe("PUT /api/sweets/:id", () => {
     expect(res.body.sweet.price).toBe(150);
     expect(res.body.sweet.stock).toBe(20);
   });
-  test.only("should Not only allowed sweets which has the price of above 200  ", async () => {
+  test("should Not only allowed sweets which has the price of above 200  ", async () => {
     const updateData = {
       name: "Luxury Sweet",
       price: 250,
